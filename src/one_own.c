@@ -20,8 +20,8 @@ one_ownptr* one_own_create(size_t size) {
     return new;
 }
 one_ownptr* one_own_move(one_ownptr* __dest__) {
-    if (!__dest__ || !__dest__->ptr) return NULL;
     if (!one_own_isvalid(__dest__)) return NULL;
+    if (!__dest__ || !__dest__->ptr) return NULL;
     one_ownptr* new = malloc(sizeof(struct one_own));
     if (!new) return NULL;
     new->ptr = __dest__->ptr;
