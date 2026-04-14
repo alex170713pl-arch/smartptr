@@ -4,9 +4,6 @@ struct shared {
     void* ptr;
     size_t refs;
 };
-struct weak {
-    shared_ptr* ptr;
-};
 shared_ptr* shared_new(size_t size) {
     shared_ptr* new = malloc(sizeof(shared_ptr));
     if (!new) return NULL;
