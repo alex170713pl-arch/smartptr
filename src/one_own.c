@@ -35,23 +35,24 @@ void* one_own_get(one_ownptr* p) {
     return p->ptr;
 }
 _Bool one_own_isvalid(one_ownptr* p) {
-    if (!p) return 0;
-    if (p->ptr != p->start) return 0;
+    if (!p ) return 0;
+    if ((uintptr_t)p->ptr != p->start) return 0;
     return 1;
 }
-void one_own_realloc(one_ownptr* __ptr,size_t __newSize) {
-    if (!one_own_isvalid(__ptr)) return;
-    void* newp = realloc(__ptr->ptr,__newSize);
-    if (!newp) return;
-    if ((uintptr_t)newp != __ptr->start) {
-        free(newp);
-        return;
-    }
-    __ptr->ptr = newp;
-    __ptr->alloced = __newSize;
+void one_own_realloc(one_ownptr* ptr, size_t new_size) {
+    if (!one_own_isvalid(ptr)) return;
+    
+    void* new_ptr = realloc(ptr->ptr, new_size);
+    if (!new_ptr) return;
+    
+    ptr->ptr = new_ptr;
+    ptr->start = (uintptr_t)new_ptr;  // ← обновляем start
+    ptr->alloced = new_size;
 }
 void one_own_free(one_ownptr* p) {
+    if (!one_own_isvalid(p)) return;
     p->alloced = 0;
     free(p->ptr);
     free(p);
+    p = NULL;
 }

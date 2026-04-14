@@ -12,7 +12,7 @@
         #define one_own_set(p,t,v) \
         do {\
             if (one_own_isvalid(p)) {\
-                *(v*)one_own_get(p) = v; \
+                *(t*)one_own_get(p) = v; \
             } \
         } while(0)
     #endif
