@@ -6,9 +6,9 @@
     shared_ptr* shared_copy(shared_ptr* targ);
     void* shared_get(shared_ptr* targ);
     #ifndef shared_set
-        #define shared_set(p,v) do {\
+        #define shared_set(p,t,v) do {\
             if (shared_isvalid(p)) {\
-                *shared_get(p) = v;\
+                *(t*)shared_get(p) = v;\
             }\
         }while(0)
     #endif

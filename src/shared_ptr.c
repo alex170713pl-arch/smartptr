@@ -31,6 +31,13 @@ size_t shared_getrefs(shared_ptr* targ){
 _Bool shared_isvalid(shared_ptr* p) {
     return  p && p->ptr;
 }
+void shared_realloc(shared_ptr* p,size_t __newsize) {
+    if (!shared_isvalid(p)) return;
+    if (__newsize == 0 ) return;
+    void* new = realloc(p->ptr,__newsize);
+    if (!new) return;
+    p->ptr = new;
+}
 void shared_free(shared_ptr** targ) {
     if (!targ || !*targ) return;
     

@@ -46,7 +46,7 @@ void one_own_realloc(one_ownptr* ptr, size_t new_size) {
     if (!new_ptr) return;
     
     ptr->ptr = new_ptr;
-    ptr->start = (uintptr_t)new_ptr;  // ← обновляем start
+    ptr->start = (uintptr_t)new_ptr; 
     ptr->alloced = new_size;
 }
 void one_own_free(one_ownptr* p) {
