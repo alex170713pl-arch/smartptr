@@ -7,7 +7,9 @@
     void* shared_get(shared_ptr* targ);
     #ifndef shared_set
         #define shared_set(p,v) do {\
-            *shared_get(p) = v;\
+            if (shared_isvalid(p)) {\
+                *shared_get(p) = v;\
+            }\
         }while(0)
     #endif
     size_t shared_getrefs(shared_ptr* targ);
