@@ -20,7 +20,7 @@ _Bool one_own_isvalid(one_ownptr* p);
 // realloc memory in pointer
 void one_own_realloc(one_ownptr* ptr, size_t new_size);
 // free of one_ownptr
-void one_own_free(one_ownptr* p);
+void one_own_free(one_ownptr** p);
 // MACRO: set value to one_ownptr
 #define one_own_set(p,t,v) 
 /*                  ^ ^ ^
@@ -80,7 +80,7 @@ int main() {
     printf("value: %d\n",*(int*)one_own_get(new));
     // pointer valid 
     printf("is valid: %d\n",one_own_isvalid(new));
-    one_own_free(new); // pointer invalue
+    one_own_free(&new); // pointer invalue
     // output 0 (false)
     printf("is valid: %d\n",one_own_isvalid(new));
     return 0;

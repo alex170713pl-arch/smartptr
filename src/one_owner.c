@@ -49,10 +49,10 @@ void one_owner_realloc(one_ownerptr* ptr, size_t new_size) {
     ptr->start = (uintptr_t)new_ptr; 
     ptr->alloced = new_size;
 }
-void one_owner_free(one_ownerptr* p) {
-    if (!one_owner_isvalid(p)) return;
-    p->alloced = 0;
-    free(p->ptr);
-    free(p);
-    p = NULL;
+void one_owner_free(one_ownerptr** p) {
+    if (!one_owner_isvalid(*p)) return;
+    (*p)->alloced = 0;
+    free((*p)->ptr);
+    free(*p);
+    *p = NULL;
 }
