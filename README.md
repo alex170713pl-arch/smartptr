@@ -55,6 +55,17 @@ void shared_realloc(shared_ptr* p,size_t __newsize);
 //free reference to shared pointer 
 void shared_free(shared_ptr** targ);
 //create weak pointer to shared
+//weak_ptr struct
+struct weak {
+    struct shared* __targ__;
+}; 
+weak_ptr* weak_new(shared_ptr* targ);
+// change address of weak pointer
+void weak_change(weak_ptr* targ,shared_ptr* new);
+// lock weak ptr
+shared_ptr* weak_lock(weak_ptr* __ptr);
+// free weak pointer 
+void weak_free(weak_ptr** __ptr);
 ```
 ### Examples
 ```c
@@ -90,6 +101,29 @@ int main() {
     shared_free(&test); //free test
     printf("refs : %d\n",shared_getrefs(test)); // refs: 0
     printf("valid: %d\n",shared_isvalid(test)); // valid: 0
+    return 0;
+}
+```
+```c
+#include "shared_ptr.h" // include shared_ptr
+#include <stdio.h> // include I/O
+int main() {
+    /* create new shared */
+    shared_ptr * new = shared_new(sizeof(long));
+    /* check pointer */
+    if (!new) return 1;
+    // create new weak pointer to pointer new
+    weak_ptr* new_weak = weak_new(new);
+    printf("refs: %zu\n",shared_getrefs(new)); // refs : 1
+    // make shared_ptr from weak
+    shared_ptr* test = weak_lock(new_weak);
+    printf("refs: %zu\n",shared_getrefs(new)); // refs : 2
+    shared_set(test,long,87878701832); // write value
+    // Value: 87878701832 
+    printf("Value: %ld\n",*(long*)shared_get(test)); 
+    shared_free(&new); // free new refs = 1
+    shared_free(&test); // free test refs = 0 -> ptr freed
+    printf("Valid: %u\n",shared_isvalid(new)); // Valid : 0
     return 0;
 }
 ```
