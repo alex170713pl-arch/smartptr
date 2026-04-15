@@ -54,6 +54,7 @@ _Bool shared_isvalid(shared_ptr* p);
 void shared_realloc(shared_ptr* p,size_t __newsize);
 //free reference to shared pointer 
 void shared_free(shared_ptr** targ);
+//create weak pointer to shared
 ```
 ### Examples
 ```c

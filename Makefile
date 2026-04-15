@@ -15,13 +15,13 @@ all: $(TARGET)
 shared_ptr.o: $(SRC)shared_ptr.c
 	@gcc $(CFLAGS) $< -o $@
 
-one_own.o: $(SRC)one_own.c
+one_owner.o: $(SRC)one_owner.c
 	@gcc $(CFLAGS) $< -o $@
 
-libsptr.a: one_own.o shared_ptr.o
+libsptr.a: one_owner.o shared_ptr.o
 	@ar rcs $@ $^
 
-libsptr.so: one_own.o shared_ptr.o
+libsptr.so: one_owner.o shared_ptr.o
 	@gcc -shared -o $@ $^
 
 clear:

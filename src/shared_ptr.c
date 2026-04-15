@@ -4,6 +4,9 @@ struct shared {
     void* ptr;
     size_t refs;
 };
+struct weak {
+    struct shared* __targ__;
+};
 shared_ptr* shared_new(size_t size) {
     shared_ptr* new = malloc(sizeof(shared_ptr));
     if (!new) return NULL;
@@ -46,6 +49,8 @@ void shared_free(shared_ptr** targ) {
     
     if (p->refs > 0) {
         p->refs--;
+        p->ptr = NULL;
+        return;
     }
     
     if (p->refs == 0) {
@@ -53,4 +58,32 @@ void shared_free(shared_ptr** targ) {
         free(p);
         *targ = NULL; 
     }
+}
+weak_ptr* weak_new(shared_ptr* targ){
+    weak_ptr* new = calloc(1,sizeof(weak_ptr));
+    new->__targ__ = targ;
+    return new;
+}
+void weak_change(weak_ptr* targ,shared_ptr* new) {
+    if (!targ) return;
+    targ->__targ__ = new;
+}
+shared_ptr* weak_lock(weak_ptr* __ptr) {
+    if (
+        !__ptr 
+        || 
+        !__ptr->__targ__ 
+        || 
+        !__ptr->__targ__->ptr
+    ) return NULL;
+
+    shared_ptr* new = __ptr->__targ__;
+    if (!new->ptr) return NULL;
+    new->refs++;
+    return new;
+}
+void weak_free(weak_ptr** __ptr) {
+    if (!*__ptr) return;
+    free(*__ptr);
+    *__ptr = NULL;
 }
